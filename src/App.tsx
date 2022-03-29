@@ -1,4 +1,7 @@
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { createGlobalStyle } from "styled-components";
+import { hourSelector, minuteState } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@300;400&display=swap');
@@ -62,11 +65,25 @@ const GlobalStyle = createGlobalStyle`
     color: inherit; //링크일 때도 이 속성 덕분에 스타일이 달라지지 않음
   }
 `;
+
 function App() {
+  const [minutes, setMinutes] = useRecoilState(minuteState);
+  const hours = useRecoilValue(hourSelector);
+  const onMinutesChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setMinutes(+event.currentTarget.value);
+  };
   return (
     <>
       <GlobalStyle />
-      <div></div>
+      <div>
+        <input
+          value={minutes}
+          onChange={onMinutesChange}
+          type="number"
+          placeholder="Minutes"
+        />
+        <input value={hours} type="number" placeholder="Hours" />
+      </div>
     </>
   );
 }
